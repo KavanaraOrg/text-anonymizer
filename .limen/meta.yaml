@@ -1,0 +1,12 @@
+# limen — the committed half of this project's context.
+#
+# The descriptor next to it (limen.yaml) is machine-local and gitignored: it
+# says who you are here. This file is repository content — the same for
+# everyone who clones the repository.
+
+# Development endpoints. Committed rather than machine-local: the ports and the
+# hostnames are what everyone who clones this works against, and what
+# `limen ports --caddy` turns into the local reverse-proxy sites. A machine on
+# which one of these is already taken overrides them in .limen/limen.yaml.
+devEndpoints: 8000 stream
+devHost: anonymizer.localhost

@@ -12,3 +12,6 @@ build/
 .pytest_cache/
 model_cache/
 *.safetensors
+
+# limen: machine-local identity, does not belong in the repository
+.limen/limen.yaml

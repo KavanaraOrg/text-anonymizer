@@ -429,6 +429,12 @@ migration contract. Contact: jane.doe@company.com.
 | Environment Variable | Default | Description |
 |---------------------|---------|-------------|
 | `OPF_DEVICE` | `cpu` | `cpu` or `cuda` (GPU) |
+| `ANONYMIZER_CONCURRENCY` | `1` | How many texts the model works on at once. On the CPU one text already uses every core; more at once only share them, so each takes longer and callers run into their timeouts. |
+| `ANONYMIZER_SEGMENT_CHARS` | `8000` | A longer text goes to the model in pieces of about this size (split at paragraphs, lines, sentences, words). Between pieces other requests get their turn, so a short text never waits for a whole long one. |
+
+`POST /anonymize` stops working on a request whose caller has gone (for example after its own timeout) at the
+next piece of the text, and answers `499` to nobody. Without this, every retry of a text too long for the caller's
+timeout added more work, until every other request timed out as well.
 
 ## Development
 

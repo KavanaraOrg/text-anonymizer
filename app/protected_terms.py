@@ -69,12 +69,29 @@ def find_protected_term_spans(
                 idx = text_lower.find(term_lower, start)
                 if idx == -1:
                     break
-                original = text[idx : idx + len(term)]
-                hits.append((category, original, idx, idx + len(term)))
+                end = idx + len(term)
+                # whole words only: "Tom" is not the "tom" in "Customer", "t" not the one in "Projekte"
+                if _starts_word(text, idx, term) and _ends_word(text, end, term):
+                    hits.append((category, text[idx:end], idx, end))
                 start = idx + 1
 
     hits.sort(key=lambda h: (h[2], -(h[3] - h[2])))
     return _remove_overlapping_hits(hits)
+
+
+
+def _starts_word(text: str, idx: int, term: str) -> bool:
+    """A term that begins with a letter or digit must not continue a word on its left."""
+    if not term or not term[0].isalnum() or idx == 0:
+        return True
+    return not text[idx - 1].isalnum()
+
+
+def _ends_word(text: str, end: int, term: str) -> bool:
+    """A term that ends with a letter or digit must not run on into a word on its right."""
+    if not term or not term[-1].isalnum() or end >= len(text):
+        return True
+    return not text[end].isalnum()
 
 
 def _remove_overlapping_hits(

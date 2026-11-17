@@ -1,16 +1,19 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
+import threading
 from contextlib import asynccontextmanager
 
 from pathlib import Path
 
-from fastapi import Body, FastAPI
+from fastapi import Body, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
+from starlette.concurrency import run_in_threadpool
 
-from app.anonymizer import anonymize, get_opf
+from app.anonymizer import AnonymizationCancelled, anonymize, get_opf
 from app.deanonymizer import deanonymize
 from app.mcp_server import mcp
 from app.models import (
@@ -80,8 +83,15 @@ def webui() -> FileResponse:
     return FileResponse(_WEBUI)
 
 
+logger = logging.getLogger("app.main")
+
+# How often a running request checks whether its caller is still there.
+_DISCONNECT_POLL_SECONDS = 1.0
+
+
 @app.post("/anonymize", response_model=AnonymizeResponse)
-def handle_anonymize(
+async def handle_anonymize(
+    http: Request,
     request: AnonymizeRequest = Body(
         openapi_examples={
             "protected_terms": ANONYMIZE_EXAMPLE_PROTECTED,
@@ -89,8 +99,26 @@ def handle_anonymize(
             "plain": ANONYMIZE_EXAMPLE_PLAIN,
         },
     ),
-) -> AnonymizeResponse:
-    return anonymize(request)
+):
+    # The work runs in the thread pool; this side watches the connection. A caller that gave up (its timeout) is not
+    # worked for any longer: the work stops at the next piece of the text, so it cannot pile up behind other requests.
+    cancel = threading.Event()
+    work = asyncio.ensure_future(run_in_threadpool(anonymize, request, cancel))
+    try:
+        while True:
+            done, _ = await asyncio.wait({work}, timeout=_DISCONNECT_POLL_SECONDS)
+            if done:
+                break
+            if await http.is_disconnected():
+                cancel.set()
+                logger.info("anonymize: caller left after its request (%d characters); stopping", len(request.text))
+                break
+        return await work
+    except AnonymizationCancelled:
+        # nobody reads this answer; 499 only for the access log
+        return JSONResponse(status_code=499, content={"detail": "client closed request"})
+    finally:
+        cancel.set()
 
 
 @app.post("/deanonymize", response_model=DeanonymizeResponse)

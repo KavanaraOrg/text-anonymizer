@@ -65,3 +65,21 @@ def test_remove_overlapping_hits():
     result = _remove_overlapping_hits(hits)
     assert len(result) == 1
     assert result[0][1] == "Acme Corp International"
+
+
+def test_whole_words_only():
+    # a person's first name must not be found inside other words (it broke "Customer", "automation", "Projekte")
+    text = "Customer journey automation, Tom and tom. Projekte"
+    spans = find_protected_term_spans(text, {"PRIVATE_PERSON": ["Tom", "t"]})
+    assert [(s[1], s[2]) for s in spans] == [("Tom", 29), ("tom", 37)]
+
+
+def test_word_boundaries_are_any_non_letter():
+    text = "Kunde Porsche/DAM, porsche-driver, faast.porsche.digital, Porsches, PorscheX"
+    spans = find_protected_term_spans(text, {"COMPANY": ["Porsche"]})
+    assert [s[1] for s in spans] == ["Porsche", "porsche", "porsche"]
+
+
+def test_umlauts_count_as_letters():
+    spans = find_protected_term_spans("Müller, Müllerin, Schmüller", {"PRIVATE_PERSON": ["Müller"]})
+    assert [(s[1], s[2]) for s in spans] == [("Müller", 0)]

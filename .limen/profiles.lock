@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "profiles": {
+    "kavanara-baseline": {
+      "version": "7.0.0",
+      "source": "https://github.com/KavanaraOrg/kavanara-baseline",
+      "files": {
+        ".claude/skills/kavanara-containerised/SKILL.md": "sha256:c6b565fc956dc81883ec421eb2a4a2826da580a89215b03e22efa8682779814a",
+        ".claude/skills/kavanara-covered/SKILL.md": "sha256:fe2bbdb425386500a3ad97cc20831d4ee0da048ebde353d778b6c757606b4482",
+        ".claude/skills/kavanara-english/SKILL.md": "sha256:c9a8e55d0eba493e1de5fe41a205988f8bb3a1b3e2b995a6efcf333b106fc9ee",
+        ".claude/skills/kavanara-headless/SKILL.md": "sha256:03a8f702649f9186fa71bcdae0f958c907a2e7d77b1c505460495cf2e741d116",
+        ".claude/skills/kavanara-human-authored/SKILL.md": "sha256:548173f64bd3b9a9f754ad4be1b6cdbb5c1a1eb6c5aced05f7f22af2c349fed5",
+        ".claude/skills/kavanara-licensed/SKILL.md": "sha256:336af2075fa324fc31bfb976ffdd38da03679955153d5dc19d57680bcbc8fcc8",
+        ".claude/skills/kavanara-secured/SKILL.md": "sha256:78f15f49778a6d65df1c2d6096339b8aa67220ec398a284e3c291863ca92b8f1",
+        ".claude/skills/kavanara-test-first/SKILL.md": "sha256:42e778d8488c3333b0389b4fb5c7d736667e20abe9d5e1c6ca88c4b0a175c9df",
+        ".claude/skills/kavanara-token-frugal/SKILL.md": "sha256:55c533b1861288ce5e10bbb16651976a8554474bc19dfab06188224ef6f97be1",
+        ".claude/skills/kavanara-vaulted/SKILL.md": "sha256:5ea6324172b0d08feefdd3ab011fd89de1454f06ca32af587555b34c386c4738",
+        "docs/adr/ADR-0001-english-is-the-working-language.md": "sha256:b3d193d9ce859b3a43d641a1ea442684798fd73b8cf99adfa18a2b42ffcfe0e7",
+        "docs/adr/ADR-0002-test-driven-development.md": "sha256:74f3d6f95e312bce491d3c2a9ecc492b16056d94961d4402df1fe08a7537f88a",
+        "docs/adr/ADR-0003-token-frugal-agent-work.md": "sha256:783a19a4d7f650e2f89ef312e3b08222667473bda7d02ffa7f518bdea9843ff1",
+        "docs/adr/ADR-0004-coverage-floor-and-static-analysis.md": "sha256:56fbc8bea033cb43ac7ba498df8fd08edd1d4f378e20b3acfc11641909af9c0e",
+        "docs/adr/ADR-0005-security-gates-and-red-teaming.md": "sha256:9fecb23081aa92b1824a4203c060f95a1cec8c204a8fb811be39141946325704",
+        "docs/adr/ADR-0006-large-projects-ship-as-containers.md": "sha256:83461d6dac0791a74a788d51e3aad85cf36c9153046faa58066d7796053cfbad",
+        "docs/adr/ADR-0007-services-are-headless-first.md": "sha256:351f6f96c46405a3a9b6c1816e5213e5a57415014aea677f035d98ae072d3762",
+        "docs/adr/ADR-0008-sbom-and-commercial-use.md": "sha256:961f7bc826dd44c9f0da3397d502944443b678f80b256f8718c49ddbb7b025b2",
+        "docs/adr/ADR-0009-one-bitwarden-vault-per-repository.md": "sha256:6d7c39b385b85057afe454a6e7a2ca5e55d31350020467f055cdaac179435ea9",
+        "docs/adr/ADR-0010-agents-are-not-co-authors.md": "sha256:569c104b05ce3679d567553ef6c1591b72a87a89ac6644992e103e336946965c"
+      }
+    }
+  }
+}

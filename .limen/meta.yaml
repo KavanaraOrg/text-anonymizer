@@ -13,3 +13,6 @@ devHost: anonymizer.localhost
 
 # vault-keeper: project card in the K3 Brain vault (10_Projekte / 30_Services)
 projectId: P-0007
+
+# Inherited norms, following the newest kavanara-baseline (limen profile sync).
+profiles: kavanara-baseline@latest
